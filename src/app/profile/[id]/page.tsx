@@ -1,16 +1,16 @@
 "use client";
 import React from "react";
 
-// Define the type for the params prop
+// Define the type for the props
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ params }) => {
-  // Access the `id` parameter from the props
-  const { id } = params;
+const ProfilePage: React.FC<ProfilePageProps> = async ({ params }) => {
+  // Await the resolution of the params Promise
+  const { id } = await params;
 
   return (
     <div className="flex items-center justify-center min-h-screen">
