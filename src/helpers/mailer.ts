@@ -32,16 +32,15 @@ export const sendMail = async ({
 
     // Use const for the transporter
     const transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+      service: "gmail",
       auth: {
-        user: "2f5b80f58debd6",
-        pass: "95d8e07be8fd66",
+        user: process.env.USER,
+        pass: process.env.PASS,
       },
     });
 
     const mailOptions = {
-      from: "developer.ritesh1@gmail.com",
+      from: process.env.EMAIL,
       to: email,
       subject:
         emailType === "verify" ? "Verify Your Email" : "Reset Your Password",
