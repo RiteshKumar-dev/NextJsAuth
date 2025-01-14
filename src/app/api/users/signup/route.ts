@@ -31,14 +31,21 @@ export async function POST(request: NextRequest) {
     console.log(saveUser);
 
     //send email verification
-    await sendMail({ email, emailType: "verify", userId: saveUser._id });
+    await sendMail({
+      email,
+      emailType: "verify",
+      userId: saveUser._id.toString(),
+    });
 
     return NextResponse.json({
       message: "User created successfully",
       success: true,
       saveUser,
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred";
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

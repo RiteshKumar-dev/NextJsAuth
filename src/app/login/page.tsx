@@ -28,12 +28,11 @@ const LoginPage = () => {
       console.log(res.data);
       toast.success("Login successful!");
       router.push("/profile");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
       console.error(error);
-      toast.error(
-        error.response?.data?.message ||
-          "Invalid credentials. Please try again."
-      );
+      toast.error(errorMessage || "Invalid credentials. Please try again.");
     }
   };
 
@@ -88,7 +87,7 @@ const LoginPage = () => {
           </button>
         </div>
         <p className="text-sm text-center text-gray-600 mt-4">
-          Don't have an account?{" "}
+          Don&apos;t have an account?
           <Link href="/signup" className="text-blue-500 hover:underline">
             Sign up here
           </Link>

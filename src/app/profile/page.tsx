@@ -5,9 +5,18 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
 
-const ProfilePage = () => {
+// Define a type for the user data
+interface UserData {
+  user: {
+    _id: string;
+    name?: string;
+    email?: string;
+  };
+}
+
+const ProfilePage: React.FC = () => {
   const router = useRouter();
-  const [data, setData] = React.useState<any>(null);
+  const [data, setData] = React.useState<UserData | null>(null);
 
   const handleLogout = async () => {
     try {
@@ -22,7 +31,7 @@ const ProfilePage = () => {
 
   const getUserInfo = async () => {
     try {
-      const res = await axios.get("/api/profile");
+      const res = await axios.get<UserData>("/api/profile");
       console.log(res.data);
       setData(res.data);
       toast.success("User information fetched successfully!");
@@ -60,7 +69,16 @@ const ProfilePage = () => {
             <Link href={`/profile/${data.user._id}`} className="text-gray-600">
               <span className="font-medium">ID:</span> {data.user._id}
             </Link>
-            {/* Add additional fields as needed */}
+            {data.user.name && (
+              <p>
+                <span className="font-medium">Name:</span> {data.user.name}
+              </p>
+            )}
+            {data.user.email && (
+              <p>
+                <span className="font-medium">Email:</span> {data.user.email}
+              </p>
+            )}
           </div>
         )}
 

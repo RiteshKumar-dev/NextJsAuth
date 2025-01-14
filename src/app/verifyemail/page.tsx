@@ -1,36 +1,40 @@
 "use client";
 import axios from "axios";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 export default function VerifyEmailPage() {
-  const [token, setToken] = useState("");
-  const [verify, setVerify] = useState(false);
-  const [error, setError] = useState(false);
+  const [token, setToken] = useState<string>(""); // Explicitly typed as string
+  const [verify, setVerify] = useState<boolean>(false); // Explicitly typed as boolean
+  const [error, setError] = useState<boolean>(false); // Explicitly typed as boolean
 
-  const verifyUserEmail = async () => {
+  const verifyUserEmail = useCallback(async () => {
     try {
       const res = await axios.post("/api/users/verifyemail", { token });
       console.log(res.data);
       setVerify(true);
-    } catch (err: any) {
-      console.error(err.response?.data || "Error verifying email");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data || "Error verifying email");
+      } else {
+        console.error("An unexpected error occurred:", err);
+      }
       setError(true);
     }
-  };
+  }, [token]); // Ensure token is included as a dependency
 
   useEffect(() => {
     // Extract token from URL
     const urlToken = new URLSearchParams(window.location.search).get("token");
     if (urlToken) {
-      setToken(urlToken || "");
+      setToken(urlToken);
     }
   }, []);
 
   useEffect(() => {
     // Trigger verification when token is set
     if (token.length > 0) verifyUserEmail();
-  }, [token]);
+  }, [token, verifyUserEmail]);
 
   // Set the document title
   useEffect(() => {

@@ -28,11 +28,12 @@ const SignUpPage = () => {
       console.log(res.data);
       toast.success("Account created successfully!");
       router.push("/login");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      toast.error(
-        error.response?.data?.message || "An error occurred. Please try again."
-      );
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+
+      toast.error(errorMessage || "An error occurred. Please try again.");
     }
   };
 

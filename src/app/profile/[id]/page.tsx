@@ -1,16 +1,16 @@
 "use client";
-
 import React from "react";
-import toast from "react-hot-toast";
 
-const ProfilePage = ({ params }: any) => {
-  // Use React's use() to unwrap params
-  const unwrappedParams: any = React.use(params);
+// Define the type for the params prop
+interface ProfilePageProps {
+  params: {
+    id: string;
+  };
+}
 
-  // Display a toast when the page is rendered
-  React.useEffect(() => {
-    // toast.success(`Welcome to the Profile Page for ID: ${unwrappedParams.id}`);
-  }, [unwrappedParams.id]);
+const ProfilePage: React.FC<ProfilePageProps> = ({ params }) => {
+  // Access the `id` parameter from the props
+  const { id } = params;
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -18,9 +18,7 @@ const ProfilePage = ({ params }: any) => {
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Welcome to the Profile Detail Page
         </h1>
-        <p className="text-center text-gray-600 mb-4">
-          This page is {unwrappedParams.id}
-        </p>
+        <p className="text-center text-gray-600 mb-4">This page is {id}</p>
       </div>
     </div>
   );
